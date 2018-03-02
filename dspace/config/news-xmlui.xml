@@ -2,8 +2,17 @@
 <document xmlns="http://di.tamu.edu/DRI/1.0/" xmlns:i18n="http://apache.org/cocoon/i18n/2.1" version="1.1">
 <body>
 <div id="file.news.div.news" n="news" rend="primary">
-<head>DSpace Repository</head>
-<p>DSpace is a digital service that collects, preserves, and distributes digital material. Repositories are important tools for preserving an organization&apos;s legacy; they facilitate digital preservation and scholarly communication.</p>
+  <head>Commons@SHAREOK Repository</head>
+
+<p>Commons@SHAREOK is a joint institutional repository built to showcase and archive outstanding student research, scholarship, and creative work produced at the University of Oklahoma (OU), Oklahoma State University (OSU), and the University of Central Oklahoma (UCO). Works may include: academic research papers and projects, student newspapers and journals, capstone projects, award-winning works, refereed works, and more.</p>
+
+<p>Digital assets placed in the repository are available to a global audience, and search engine optimization techniques are used to increase their visibility to researchers, future employers, and graduate programs to which you might apply. See our FAQ for some <xref target="https://lib.ou.edu/documents/Student_Commons_FAQ.pdf">other reasons</xref> to submit your work to commons.shareok.org.</p>
+
+<p>To submit works to this repository, please refer to our <xref
+target="https://lib.ou.edu/documents/Student_Commons_FAQ.pdf">FAQ</xref> and read the Policies and Guidelines. Then contact your library: OU or OSU.</p>
+
+<p>OU students submitting a thesis or dissertation to the Graduate College via SHAREOK should go to <xref target="https://shareok.org">SHAREOK.org</xref>.</p>
+
 </div>
 </body>
 <options/>
