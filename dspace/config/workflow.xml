@@ -6,8 +6,21 @@
         <!--<name-map collection="123456789/5" workflow="scoreReview"/>-->
     </workflow-map>
 
+    <!-- Single step workflow for default -->
+    <workflow start="def-editstep" id="default">
+      <roles>
+        <role id="editor" name="Editor" scope="repository" description="The people responsible for this step complete the entire submission workflow."/>
+      </roles>
+
+      <step id="def-editstep" role="editor" userSelectionMethod="claimaction">
+        <actions>
+          <action id="editaction"/>
+        </actions>
+      </step>
+    </workflow>
+
     <!--Standard workflow step-->
-    <workflow start="reviewstep" id="default">
+    <workflow start="reviewstep" id="classic">
 
         <roles>
             <role id="reviewer" name="Reviewer" description="The people responsible for this step are able to edit the metadata of incoming submissions, and then accept or reject them." />
