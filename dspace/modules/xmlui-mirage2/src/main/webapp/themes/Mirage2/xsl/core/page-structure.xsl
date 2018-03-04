@@ -80,6 +80,8 @@
                     <!-- Prompt IE 6 users to install Chrome Frame. Remove this if you support IE 6.
                    chromium.org/developers/how-tos/chrome-frame-getting-started -->
                     <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+                    <xsl:call-template name="add-google-tagmanager-noscript" />
+
                     <xsl:choose>
                         <xsl:when
                                 test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='framing'][@qualifier='popup']">
@@ -226,7 +228,8 @@
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverPort']"/>
                         <xsl:value-of select="$context-path"/>
                         <xsl:text>/</xsl:text>
-                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='opensearch'][@qualifier='autolink']"/>
+                        <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='opensearch'][@qualifier='context']"/>
+                        <xsl:text>description.xml</xsl:text>
                     </xsl:attribute>
                     <xsl:attribute name="title" >
                         <xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='opensearch'][@qualifier='shortName']"/>
@@ -269,7 +272,7 @@
 
             <xsl:text disable-output-escaping="yes">&lt;!--[if lt IE 9]&gt;
                 &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/html5shiv/dist/html5shiv.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
-                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/respond/dest/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
+                &lt;script src="</xsl:text><xsl:value-of select="concat($theme-path, 'vendor/respond/respond.min.js')"/><xsl:text disable-output-escaping="yes">"&gt;&#160;&lt;/script&gt;
                 &lt;![endif]--&gt;</xsl:text>
 
             <!-- Modernizr enables HTML5 elements & feature detects -->
@@ -319,7 +322,7 @@
                 </script>
                 <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">&#160;</script>
             </xsl:if>
-
+            <xsl:call-template name="addJavascript-google-tagmanager" />
         </head>
     </xsl:template>
 
@@ -333,6 +336,14 @@
             <div class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
+            <a href="{$context-path}/" class="navbar-brand">
+                        <h1>
+                            <i18n:text>xmlui.dri2xhtml.structural.head-subtitle2</i18n:text>
+                        </h1>
+                        <h4>
+                            <i18n:text>xmlui.dri2xhtml.structural.head-subtitle3</i18n:text>
+                        </h4>
+                </a>
 
                         <button type="button" class="navbar-toggle" data-toggle="offcanvas">
                             <span class="sr-only">
@@ -342,11 +353,6 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-
-                        <a href="{$context-path}/" class="navbar-brand">
-                            <img src="{$theme-path}images/DSpace-logo-line.svg" />
-                        </a>
-
 
                         <div class="navbar-header pull-right visible-xs hidden-sm hidden-md hidden-lg">
                         <ul class="nav nav-pills pull-left ">
@@ -417,19 +423,19 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                         </ul>
-                              </div>
+                                </div>
                     </div>
 
                     <div class="navbar-header pull-right hidden-xs">
                         <ul class="nav navbar-nav pull-left">
-                              <xsl:call-template name="languageSelection"/>
+                                <xsl:call-template name="languageSelection"/>
                         </ul>
                         <ul class="nav navbar-nav pull-left">
                             <xsl:choose>
                                 <xsl:when test="/dri:document/dri:meta/dri:userMeta/@authenticated = 'yes'">
                                     <li class="dropdown">
                                         <a id="user-dropdown-toggle" href="#" role="button" class="dropdown-toggle"
-                                           data-toggle="dropdown">
+                                            data-toggle="dropdown">
                                             <span class="hidden-xs">
                                                 <xsl:value-of select="/dri:document/dri:meta/dri:userMeta/
                             dri:metadata[@element='identifier' and @qualifier='firstName']"/>
@@ -458,14 +464,6 @@
                                     </li>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <li>
-                                        <a href="{/dri:document/dri:meta/dri:userMeta/
-                            dri:metadata[@element='identifier' and @qualifier='loginURL']}">
-                                            <span class="hidden-xs">
-                                                <i18n:text>xmlui.dri2xhtml.structural.login</i18n:text>
-                                            </span>
-                                        </a>
-                                    </li>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </ul>
@@ -885,6 +883,27 @@
                 ga('create', '</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='analytics']"/><xsl:text>', '</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='request'][@qualifier='serverName']"/><xsl:text>');
                 ga('send', 'pageview');
             </xsl:text></script>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="addJavascript-google-tagmanager">
+        <!-- Google Tag Manager -->
+        <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='tagmanager']">
+            <script><xsl:text>
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j
+                .src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})
+                (window,document,'script','dataLayer','</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='tagmanager']"/><xsl:text>');
+            </xsl:text></script>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="add-google-tagmanager-noscript">
+        <!-- Google Tag Manager (noscript) -->
+        <xsl:if test="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='tagmanager']">
+            <xsl:text disable-output-escaping='yes'>&lt;noscript&gt;&lt;iframe src="https://www.googletagmanager.com/ns.html?id=</xsl:text><xsl:value-of select="/dri:document/dri:meta/dri:pageMeta/dri:metadata[@element='google'][@qualifier='tagmanager']"/>"<xsl:text disable-output-escaping="yes">
+                height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;&lt;/noscript&gt;</xsl:text>
         </xsl:if>
     </xsl:template>
 
